@@ -1,0 +1,105 @@
+openapi: "3.0.1"
+info:
+  title: "Encryption Decryption - OpenAPI 3.0"
+  description: "Swagger specification for Encryption and Decryption APIs"
+  version: 1.0.0
+tags:
+  - name: encrypt
+    description: Encryption related APIs are available here
+  - name: decrypt
+    description: Decryption related APIs are available here
+
+paths:
+  /encrypt:
+    post:
+      tags:
+        - encrypt
+      summary: "Encrypts the message"
+      operationId: "encryptMessage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncryptionRequest'
+        required: true
+      responses:
+        '200':
+          description: "Message has been ecrypted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncryptionResponse'          
+        '400':
+          description: "Bad Request input"
+        '500':
+          description: "Internal Server Error"
+
+  /decrypt:
+    post:
+      tags:
+        - encrypt
+      summary: "Decrypts the message with the key supplied"
+      operationId: "decryptMessage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecryptionRequest'
+        required: true
+      responses:
+        '200':
+          description: "Message has been ecrypted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecryptionResponse'          
+        '400':
+          description: "Bad Request input"
+        '500':
+          description: "Internal Server Error"
+
+components:
+  schemas:
+    EncryptionRequest:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          example: 4512
+
+    EncryptionResponse:
+      required:
+        - encryptedMessage
+        - key
+      type: object
+      properties:
+        encryptedMessage:
+          type: string
+          example: 7GmbBt3dSkBY4lqFSaWADQ==
+        key:
+          type: string
+          example: DEAB4967BB669B9B
+
+    DecryptionRequest:
+      required:
+        - encryptedMessage
+        - key
+      type: object
+      properties:
+        encryptedMessage:
+          type: string
+          example: 7GmbBt3dSkBY4lqFSaWADQ==
+        key:
+          type: string
+          example: DEAB4967BB669B9B
+
+    DecryptionResponse:
+      required:
+        - decryptedMessage
+      type: object
+      properties:
+        decryptedMessage:
+          type: string
+          example: 4512
